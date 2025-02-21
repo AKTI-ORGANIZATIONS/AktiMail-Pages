@@ -1,0 +1,41 @@
+<div class="hero-input">
+  <input type="email" id="email" class="form-control" placeholder="Enter your email" aria-label="Email" required>
+  <button class="btn-custom" id="submitBtn">Join Waitlist</button>
+</div>
+
+<script>
+  document.getElementById('submitBtn').addEventListener('click', function() {
+      var email = document.getElementById('email').value.trim(); // Trim any extra spaces
+      if (!email) {
+          alert('Please enter a valid email address.');
+          return;
+      }
+
+      var url = 'https://reg.aktimail.com/' + encodeURIComponent(email);
+
+      console.log('Sending request to:', url); // Debugging line
+
+      fetch(url, {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json'
+          }
+      })
+      .then(response => {
+          console.log('Response status:', response.status); // Debugging line
+          if (!response.ok) {
+              throw new Error('Network response was not ok');
+          }
+          return response.text();
+      })
+      .then(data => {
+          console.log('Response data:', data); // Debugging line
+          alert('Thank you for subscribing!');
+          document.getElementById('email').value = ''; // Clear the input field
+      })
+      .catch(error => {
+          console.error('Error:', error);
+          alert('There was a problem with your subscription. Please try again later.');
+      });
+  });
+</script>
